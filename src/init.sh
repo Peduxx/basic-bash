@@ -1,82 +1,109 @@
 #!/bin/bash
 
-echo Atualizando repositórios
-
+echo "(i)Updating repositories..."
 if ! apt-get update
 then
-echo "Não foi possível atualizar os repositórios. Verifique seu arquivo /etc/apt/sources.list"
+echo "[!]The repositories could not be updated. Check your /etc/apt/sources.list"
 exit 1
 fi
-echo "Atualização feita com sucesso"
-echo "Atualizando pacotes já instalados"
+echo "(OK)Update completed successfully!"
+echo "(i)Updating packages already installed..."
 if ! apt-get dist-upgrade -y
 then
-echo "Não foi possível atualizar pacotes."
+echo "[!]Unable to update packages."
 exit 1
 fi
-echo "Atualizaçaõ de pacotes feita com sucesso"
+echo "(OK)Packages update completed successfully!"
 if ! apt-get install $1
 then
-echo "Não foi possível instalar o pacote $1"
+echo "[!]Unable to install $1 package."
 exit 1
 fi
-echo "Instalação finalizada"
+echo "(OK)Installation completed!"
+echo "(i)Starting Google Chrome installation..."
 if ! wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 then
-echo "Não foi possível fazer o download do Google Chrome"
+echo "[!]Unable to download Google Chrome."
 exit 1
 fi
-echo "Google Chrome baixado com sucesso"
-if ! apt install ./Downloads/google-chrome-stable_current_amd64.deb
+echo "(OK)Google Chrome downloaded successfully!"
+echo "(i)Starting Google Chrome installation..."
+if ! apt install ~/Downloads/google-chrome-stable_current_amd64.deb
 then
-echo "Não foi possível fazer a instalação do Google Chrome"
+echo "[!]Unable to install Google Chrome."
 exit 1
 fi
-echo "Google Chrome instalado com sucesso"
+echo "(OK)Google Chrome succesfully installed"
+echo "(i)Starting VSCode download..."
 if ! apt install software-properties-common apt-transport-https wget
 then
-echo "Não foi possível dar a inicio ao download do VSCODE"
+echo "[!]Unable start VSCode download."
 exit 1
 fi
-echo "VSCODE: passo 1 realizado com sucesso"
+echo "(OK)First step completed!"
 if ! wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add --
 then
-echo "Impossível fazer a importação da chave Microsoft GPG"
+echo "[!]Unable to import Microsoft GPG key."
 exit 1
 fi
-echo "VSCODE: passo 2 realizado com sucesso"
-if ! add-apt-repository “deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main”
+echo "(OK)Second step completed!"
+if ! add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
 then
-echo "Impossível ativar o repositório do VSCODE"
+echo "[!]Unable to activate the VSCode repository."
 exit 1
 fi
-echo "VSCODE: passo 3 realizado com sucesso"
-echo "VSCODE: Download finalizado"
-echo "VSCODE: Começando instalação"
+echo "(OK)Third step completed!"
+echo "(OK)VSCode downloaded sucessfully!"
+echo "(i)Starting VSCode installation..."
 if ! apt install code
 then
-echo "Impossível realizar a insttalação do VSCODE"
+echo "[!]Unable to install VSCode."
 exit 1
 fi
-echo "VSCODE: Instalação concluída com sucesso"
+echo "(OK)VSCode installation was successfull!"
+echo "(i)Starting NodeJS installation..."
 if ! apt install nodejs
 then
-echo "Erro ao instalar o NODEJS"
+echo "[!]Unable to install NodeJS."
 exit 1
 fi
-echo "NODEJS: instalado com sucesso"
-echo "Se preparando para configurar o repositório Yarn"
+echo "(OK)NodeJS installation was successfull!"
+echo "(i)Starting Yarn installation..."
 if ! curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 then
-echo "Erro na configuração do repositório Yarn"
+echo "[!]Unable to install Yarn."
 exit 1
 fi
-echo "Seguindo para o próximo passo..."
+echo "(OK)First step completed!"
 if ! apt-get install yarn
 then
-echo "Erro na instalação do Yarn"
+echo "[!]Unable to install Yarn."
 exit 1
 fi
-echo
-"Yarn: instalação concluída com sucesso"
+echo "(OK)Yarn installation was successfull!"
+echo "(i)Getting ready to install Discord and Spotify..."
+if ! apt install snapd
+then
+echo "[!]Unable to install Snapd."
+exit 1
+fi
+echo "(OK)Snapd installation was successfull!"
+echo "(i)Starting Discord installation..."
+if ! snap install discord --classic
+then
+echo "[!]Unable to install Discord."
+exit 1
+fi
+echo "(OK)Discord installation was successfull!"
+echo "(i)Starting Spotify installation..."
+if ! snap install spotify
+then
+echo "[!]Unable to install Spotify."
+exit 1
+fi
+echo "(OK)Spotify installation was successfull!"
+echo "(OK)Process concluded!"
+echo "Pedux: Thank you for used our tool!"
+echo "Pedux: Now... GO CODE!!!!!!"
+echo "Pedux: See you soon!! :D ;)"
